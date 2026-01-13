@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Label</title>
+  <link href="./dist/output.css" rel="stylesheet">
+</head>
+<body class="h-screen flex bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="w-[280px] bg-[#3D3557] text-white flex flex-col shrink-0">
+    <!-- Navigation Items -->
+    <nav class="flex flex-col py-2">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span>Substance Information</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        <span>Internal Information</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+        </svg>
+        <span>Transport Information</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span>Hazard & PPE Labelling</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        </svg>
+        <span>Phrases/Statements</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        <span>Spillage, Storage and Waste</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        <span>Work Exposure Limits (WELS)</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Usage</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>History</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        <span>Revisions</span>
+      </a>
+      <!-- Active Item -->
+      <a href="#" class="flex items-center gap-3 px-4 py-3 bg-blue-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <span>Manage Label</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="p-4 flex gap-2 bg-white border-b">
+      <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm">
+        Autopopulate SDS Details
+      </button>
+      <button class="border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded text-sm text-gray-700">
+        View SDS
+      </button>
+      <button class="border border-red-500 hover:bg-red-50 text-red-500 px-4 py-2 rounded text-sm">
+        View Risk Summary
+      </button>
+    </header>
+
+    <!-- Form Content -->
+    <div class="flex-1 p-6 overflow-auto">
+      <form class="bg-white rounded-lg shadow p-6">
+        <div class="grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start">
+
+          <!-- Package Capacity -->
+          <label class="text-sm text-gray-700 pt-2">Package Capacity:</label>
+          <div class="flex flex-wrap gap-x-6 gap-y-2">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="capacity" value="3l" class="w-4 h-4">
+              <span class="text-sm">≤ 3 Liters</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="capacity" value="3l-50l" class="w-4 h-4">
+              <span class="text-sm">> 3L but ≤ 50L</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="capacity" value="50l-500l" class="w-4 h-4">
+              <span class="text-sm">> 50L but ≤ 500L</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="capacity" value="500l" class="w-4 h-4">
+              <span class="text-sm">> 500 Liters</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="capacity" value="default" class="w-4 h-4" checked>
+              <span class="text-sm">Default</span>
+            </label>
+          </div>
+
+          <!-- CAS Numbers -->
+          <label class="text-sm text-gray-700 pt-2">CAS Numbers:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="123-86-4, 64742-48-9, 34590-94-8, 15956-58-8, 95-50-1">
+
+          <!-- EINEC Numbers -->
+          <label class="text-sm text-gray-700 pt-2">EINEC Numbers:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value=",204-658-1,265-150-3,252-104-2,240-085-3,202-425-9">
+
+          <!-- Substance Name -->
+          <label class="text-sm text-gray-700 pt-2">Substance Name :</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="DIRECT TO RUST METAL PAINT SMOOTH AEROSOL">
+
+          <!-- Manufacturer -->
+          <label class="text-sm text-gray-700 pt-2">Manufacturer:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="ICI Paints AkzoNobel">
+
+          <!-- Address -->
+          <label class="text-sm text-gray-700 pt-2">Address:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="Wexham Road, Slough, Berkshire, SL2 5DS, U.K">
+
+          <!-- Tel -->
+          <label class="text-sm text-gray-700 pt-2">Tel:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="+44 (0) 333 222 70 70">
+
+          <!-- Website -->
+          <label class="text-sm text-gray-700 pt-2">Website:</label>
+          <input type="text"
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value="www.duluxtrade.co.uk">
+
+          <!-- Signal Word -->
+          <label class="text-sm text-gray-700 pt-2">Signal Word :</label>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="signal" value="danger" class="w-4 h-4">
+              <span class="text-sm">Danger</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="signal" value="warning" class="w-4 h-4">
+              <span class="text-sm">Warning</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="signal" value="none" class="w-4 h-4" checked>
+              <span class="text-sm">None</span>
+            </label>
+          </div>
+
+          <!-- Others -->
+          <label class="text-sm text-gray-700 pt-2">Others:</label>
+          <textarea
+            class="border border-gray-300 rounded px-3 py-2 text-sm w-full h-36 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder=""></textarea>
+
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="p-4 flex justify-end gap-2 bg-white border-t">
+      <button class="border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded text-sm text-gray-700">
+        Preview
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">
+        Publish
+      </button>
+    </footer>
+  </main>
+</body>
+</html>

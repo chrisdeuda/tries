@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Label Preview Modal</title>
+  <link href="./dist/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+  <!-- Modal Container -->
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+    <!-- Header -->
+    <p class="text-gray-500 mb-6">Label Preview</p>
+
+    <!-- Two-Column Grid Body -->
+    <div class="grid grid-cols-[55%_45%] gap-12">
+      <!-- Column A: Product Info & Icons -->
+      <div>
+        <h1 class="text-xl font-bold mb-2">DIRECT TO RUST METAL PAINT SMOOTH AEROSOL</h1>
+        <p class="text-sm mb-1">CAS RN: 123-86-4, 64742-48-9, 34590-94-8, 15956-58-8, 95-50-1</p>
+        <p class="text-sm mb-6">EINEC Numbers ,204-658-1,265-150-3,252-104-2,240-085-3,202-425-9</p>
+
+        <!-- GHS Hazard Pictograms -->
+        <div class="flex gap-5">
+          <!-- Flame (GHS02) - Flammable -->
+          <svg width="80" height="80" viewBox="0 0 100 100" class="shrink-0">
+            <rect x="50" y="3" width="66" height="66" transform="rotate(45 50 50)" fill="white" stroke="#DC2626" stroke-width="3"/>
+            <path d="M50 25 C45 35 35 40 35 55 C35 68 42 75 50 75 C58 75 65 68 65 55 C65 40 55 35 50 25 M50 45 C55 50 57 55 55 62 C53 68 50 70 47 68 C44 65 45 60 50 45" fill="#000"/>
+          </svg>
+
+          <!-- Exclamation Mark (GHS07) - Irritant -->
+          <svg width="80" height="80" viewBox="0 0 100 100" class="shrink-0">
+            <rect x="50" y="3" width="66" height="66" transform="rotate(45 50 50)" fill="white" stroke="#DC2626" stroke-width="3"/>
+            <rect x="46" y="28" width="8" height="32" fill="#000"/>
+            <circle cx="50" cy="70" r="5" fill="#000"/>
+          </svg>
+
+          <!-- Health Hazard (GHS08) -->
+          <svg width="80" height="80" viewBox="0 0 100 100" class="shrink-0">
+            <rect x="50" y="3" width="66" height="66" transform="rotate(45 50 50)" fill="white" stroke="#DC2626" stroke-width="3"/>
+            <!-- Human silhouette with star -->
+            <circle cx="50" cy="30" r="8" fill="#000"/>
+            <path d="M50 40 L50 65 M50 45 L35 55 M50 45 L65 55 M50 65 L40 80 M50 65 L60 80" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+            <!-- Star/damage symbol on torso -->
+            <path d="M42 50 L46 54 L42 58 L47 56 L50 60 L53 56 L58 58 L54 54 L58 50 L53 52 L50 48 L47 52 Z" fill="white"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Column B: Hazard Statements -->
+      <div class="space-y-1 text-sm">
+        <p>H222: Extremely flammable material</p>
+        <p>H229 : Pressurised containerMay burst if heated</p>
+        <p>H315: Causes skin irritation</p>
+        <p>H336: May cause drowsiness or dizziness</p>
+        <p>H412: Harmful to aquatic life with long lasting effects</p>
+        <p>P304+P312: If inhaled:call a poison center or doctor/physician if you feel unwell</p>
+        <p>P362+P364: Take off contaminated clothing and wash it before reuse.</p>
+        <p>P403+P233: Store in a well ventilated place. Keep container tightly closed</p>
+        <p>P410+P412: Protect from sunlight. Do not expose to temperatures exceeding 50 °C/+/+/122 °F</p>
+      </div>
+    </div>
+
+    <!-- Manufacturer Footer -->
+    <div class="border-t border-gray-200 mt-8 pt-4 text-xs text-gray-600">
+      <p>
+        Manufacturer: <strong>ICI Paints AkzoNobel</strong> |
+        Address: <span>Wexham Road, Slough, Berkshire, SL2 5DS, U.K</span> |
+        Tel: <strong>+44 (0) 333 222 70 70</strong> |
+        Website: <a href="https://www.duluxtrade.co.uk" class="text-blue-600">www.duluxtrade.co.uk</a>
+      </p>
+    </div>
+
+    <!-- Close Button -->
+    <div class="mt-6">
+      <button class="border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+        Close
+      </button>
+    </div>
+  </div>
+</body>
+</html>
