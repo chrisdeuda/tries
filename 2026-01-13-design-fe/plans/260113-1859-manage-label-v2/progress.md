@@ -106,3 +106,24 @@ Added header with 3 buttons:
 - Button 1: "Autopopulate SDS Details" with bg-purple-600 text-white px-4 py-2 rounded text-sm hover effects
 - Button 2: "View SDS" with border border-gray-300 px-4 py-2 rounded text-sm hover effects
 - Button 3: "View Risk Summary" with border border-red-500 text-red-500 px-4 py-2 rounded text-sm hover effects
+
+---
+## [260113-1859-manage-label-v2] Task 9: Add footer with 2 buttons
+**Status:** In Progress | **Time:** 2026-01-13 19:04 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Add footer element with p-4 flex justify-end gap-2 bg-white border-t classes
+- Add button 1: "Preview" with border border-gray-300 px-4 py-2 rounded text-sm
+- Add button 2: "Publish" with bg-blue-500 text-white px-4 py-2 rounded text-sm
+
+---
+
+[19:04] Started: Add footer with p-4 flex justify-end gap-2 bg-white border-t and 2 buttons
+[19:04] Completed: Added footer with 2 buttons
+
+### Result
+**Status:** Completed | **Completed:** 19:04
+Added footer with 2 buttons:
+- Footer element with p-4 flex justify-end gap-2 bg-white border-t classes
+- Button 1: "Preview" with border border-gray-300 px-4 py-2 rounded text-sm hover effects
+- Button 2: "Publish" with bg-blue-500 text-white px-4 py-2 rounded text-sm hover effects
