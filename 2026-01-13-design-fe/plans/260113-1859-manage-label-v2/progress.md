@@ -187,3 +187,34 @@ Added form grid:
 Added Package Capacity field:
 - Label with "Package Capacity" text
 - 5 radio buttons in flex layout: ≤3 Liters, >3L but ≤50L, >50L but ≤500L, >500 Liters, Default (checked)
+
+---
+## [260113-1859-manage-label-v2] Task 14-20: Add text input fields
+**Status:** In Progress | **Time:** 2026-01-13 19:06 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Add CAS Numbers field with pre-filled value
+- Add EINEC Numbers field with pre-filled value
+- Add Substance Name field with pre-filled value
+- Add Manufacturer field with pre-filled value
+- Add Address field with pre-filled value
+- Add Tel field with pre-filled value
+- Add Website field with pre-filled value
+
+---
+
+[19:06] Started: Add all text input fields (CAS, EINEC, Substance Name, Manufacturer, Address, Tel, Website)
+[19:06] Completed: Added all form fields including text inputs, Signal Word radios, and Others textarea
+
+### Result
+**Status:** Completed | **Completed:** 19:06
+Added all remaining form fields:
+- CAS Numbers: text input with pre-filled value
+- EINEC Numbers: text input with pre-filled value
+- Substance Name: text input with pre-filled value
+- Manufacturer: text input with pre-filled value
+- Address: text input with pre-filled value
+- Tel: text input with pre-filled value
+- Website: text input with pre-filled value
+- Signal Word: 3 radio buttons (Danger, Warning, None)
+- Others: textarea with h-36 resize-y for flexible sizing
