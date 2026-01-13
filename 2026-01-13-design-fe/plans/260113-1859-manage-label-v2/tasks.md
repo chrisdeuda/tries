@@ -9,10 +9,10 @@
 
 ## Phase 2: Header & Footer
 
-- [ ] Add header: header with p-4 flex gap-2 bg-white border-b containing 3 buttons
-- [ ] Header button 1: "Autopopulate SDS Details" with bg-purple-600 text-white px-4 py-2 rounded text-sm
-- [ ] Header button 2: "View SDS" with border border-gray-300 px-4 py-2 rounded text-sm
-- [ ] Header button 3: "View Risk Summary" with border border-red-500 text-red-500 px-4 py-2 rounded text-sm
+- [x] Add header: header with p-4 flex gap-2 bg-white border-b containing 3 buttons
+- [x] Header button 1: "Autopopulate SDS Details" with bg-purple-600 text-white px-4 py-2 rounded text-sm
+- [x] Header button 2: "View SDS" with border border-gray-300 px-4 py-2 rounded text-sm
+- [x] Header button 3: "View Risk Summary" with border border-red-500 text-red-500 px-4 py-2 rounded text-sm
 - [ ] Add footer: footer with p-4 flex justify-end gap-2 bg-white border-t
 - [ ] Footer buttons: "Preview" (border gray) and "Publish" (bg-blue-500 text-white)
 

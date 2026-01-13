@@ -83,3 +83,26 @@ Added main container:
 - Fills remaining horizontal space after sidebar (flex-1)
 - Flex column layout for vertical stacking of header, form, footer
 - Overflow hidden to contain inner scroll content
+
+---
+## [260113-1859-manage-label-v2] Task 5: Add header with 3 buttons
+**Status:** In Progress | **Time:** 2026-01-13 19:04 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Add header element with p-4 flex gap-2 bg-white border-b classes
+- Add button 1: "Autopopulate SDS Details" with bg-purple-600 text-white px-4 py-2 rounded text-sm
+- Add button 2: "View SDS" with border border-gray-300 px-4 py-2 rounded text-sm
+- Add button 3: "View Risk Summary" with border border-red-500 text-red-500 px-4 py-2 rounded text-sm
+
+---
+
+[19:04] Started: Add header with p-4 flex gap-2 bg-white border-b and 3 buttons
+[19:04] Completed: Added header with 3 buttons
+
+### Result
+**Status:** Completed | **Completed:** 19:04
+Added header with 3 buttons:
+- Header element with p-4 flex gap-2 bg-white border-b classes
+- Button 1: "Autopopulate SDS Details" with bg-purple-600 text-white px-4 py-2 rounded text-sm hover effects
+- Button 2: "View SDS" with border border-gray-300 px-4 py-2 rounded text-sm hover effects
+- Button 3: "View Risk Summary" with border border-red-500 text-red-500 px-4 py-2 rounded text-sm hover effects
