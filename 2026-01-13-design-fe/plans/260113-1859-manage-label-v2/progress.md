@@ -167,3 +167,23 @@ Added form grid:
 - Div with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start classes
 - Creates 2-column layout (140px labels, flexible content)
 - Proper spacing and alignment for form fields
+
+---
+## [260113-1859-manage-label-v2] Task 13: Add Package Capacity field
+**Status:** In Progress | **Time:** 2026-01-13 19:05 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Add label with text "Package Capacity"
+- Add 5 radio buttons: ≤3 Liters, >3L but ≤50L, >50L but ≤500L, >500 Liters, Default (checked)
+- Use flex gap for radio button layout
+
+---
+
+[19:05] Started: Add Package Capacity field with label and 5 radio buttons
+[19:05] Completed: Added Package Capacity field with 5 radio buttons
+
+### Result
+**Status:** Completed | **Completed:** 19:05
+Added Package Capacity field:
+- Label with "Package Capacity" text
+- 5 radio buttons in flex layout: ≤3 Liters, >3L but ≤50L, >50L but ≤500L, >500 Liters, Default (checked)

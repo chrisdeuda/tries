@@ -38,6 +38,25 @@
             <form class="bg-white rounded-lg shadow p-6">
                 <!-- Form Grid -->
                 <div class="grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start">
+                    <!-- Package Capacity -->
+                    <label class="font-medium text-sm">Package Capacity</label>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="capacity" value="small"> ≤3 Liters
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="capacity" value="medium"> >3L but ≤50L
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="capacity" value="large"> >50L but ≤500L
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="capacity" value="xlarge"> >500 Liters
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="capacity" value="default" checked> Default
+                        </label>
+                    </div>
                 </div>
             </form>
         </div>
