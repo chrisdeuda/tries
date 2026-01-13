@@ -41,3 +41,25 @@ Added sidebar navigation with:
 - Nav container with flex flex-col layout
 - 11 navigation items: Substance Information, Internal Information, Transport Information, Hazard & PPE Labelling, Phrases/Statements, Spillage Storage and Waste, Work Exposure Limits (WELS), Usage, History, Revisions, and Manage Label (active with bg-blue-500)
 
+---
+## [260113-1859-manage-label-v2] Task 3: Sidebar nav items styling
+**Status:** In Progress | **Time:** 2026-01-13 19:03 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Verify all 11 sidebar nav items have proper styling
+- Ensure "Manage Label" is marked active with bg-blue-500
+- Ensure hover effects are applied (hover:bg-gray-700)
+
+---
+
+[19:03] Started: Verify sidebar nav items styling matches requirements
+[19:03] Completed: All 11 nav items already properly styled from Task 2
+
+### Result
+**Status:** Completed | **Completed:** 19:03
+Sidebar navigation items verified:
+- All 11 items present with correct labels
+- "Manage Label" marked as active with bg-blue-500
+- Hover effects applied with hover:bg-gray-700 transition-colors
+- All items use px-4 py-3 padding for consistent spacing
+

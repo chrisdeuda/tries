@@ -4,7 +4,7 @@
 
 - [x] Create manage-label-v2.html with DOCTYPE, head with Tailwind link (./dist/output.css), body with h-screen flex bg-gray-100
 - [x] Add sidebar: aside with w-[280px] bg-[#3D3557] text-white, containing nav with 11 items
-- [ ] Sidebar nav items: Substance Information, Internal Information, Transport Information, Hazard & PPE Labelling, Phrases/Statements, Spillage Storage and Waste, Work Exposure Limits (WELS), Usage, History, Revisions, Manage Label (active with bg-blue-500)
+- [x] Sidebar nav items: Substance Information, Internal Information, Transport Information, Hazard & PPE Labelling, Phrases/Statements, Spillage Storage and Waste, Work Exposure Limits (WELS), Usage, History, Revisions, Manage Label (active with bg-blue-500)
 - [ ] Add main container: main with flex-1 flex flex-col overflow-hidden
 
 ## Phase 2: Header & Footer
