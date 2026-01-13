@@ -147,3 +147,23 @@ Added form container:
 - Container div with flex-1 p-6 overflow-auto classes
 - Form element with bg-white rounded-lg shadow p-6 classes
 - Form ready for field content in next tasks
+
+---
+## [260113-1859-manage-label-v2] Task 12: Add form grid
+**Status:** In Progress | **Time:** 2026-01-13 19:05 | **Model:** haiku | **Mode:** prototype
+
+### Plan
+- Add div with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start classes
+- This creates a 2-column layout with 140px label column and flexible content column
+
+---
+
+[19:05] Started: Add form grid with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start
+[19:05] Completed: Added form grid container
+
+### Result
+**Status:** Completed | **Completed:** 19:05
+Added form grid:
+- Div with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start classes
+- Creates 2-column layout (140px labels, flexible content)
+- Proper spacing and alignment for form fields

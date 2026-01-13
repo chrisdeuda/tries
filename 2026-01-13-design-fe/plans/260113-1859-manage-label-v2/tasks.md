@@ -19,7 +19,7 @@
 ## Phase 3: Form Fields
 
 - [x] Add form container: div with flex-1 p-6 overflow-auto, containing form with bg-white rounded-lg shadow p-6
-- [ ] Form grid: div with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start
+- [x] Form grid: div with grid grid-cols-[140px_1fr] gap-x-6 gap-y-4 items-start
 - [ ] Package Capacity: label + 5 radio buttons (≤3 Liters, >3L but ≤50L, >50L but ≤500L, >500 Liters, Default checked)
 - [ ] CAS Numbers: label + text input with value "123-86-4, 64742-48-9, 34590-94-8, 15956-58-8, 95-50-1"
 - [ ] EINEC Numbers: label + text input with value ",204-658-1,265-150-3,252-104-2,240-085-3,202-425-9"
