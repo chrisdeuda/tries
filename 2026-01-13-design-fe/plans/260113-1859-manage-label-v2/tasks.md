@@ -30,4 +30,4 @@
 - [x] Website: label + text input with value "www.duluxtrade.co.uk"
 - [x] Signal Word: label + 3 radio buttons (Danger, Warning, None checked)
 - [x] Others: label + textarea with h-36 resize-y
-- [ ] CHECKPOINT: Run npm run build and open in browser to verify
+- [x] CHECKPOINT: Run npm run build and open in browser to verify
