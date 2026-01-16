@@ -58,7 +58,7 @@
   - **AC:** On mobile (< 768px), columns stack vertically; on desktop, side-by-side
   - **Test:** Resize browser window, verify layout switches at md breakpoint
 
-- [ ] Task 13: Add equal height columns
+- [x] Task 13: Add equal height columns
   - **AC:** Both textarea and output pre have matching heights
   - **Implementation:** Use `flex-1` on both panels, ensure `min-h-[300px]` consistent
 

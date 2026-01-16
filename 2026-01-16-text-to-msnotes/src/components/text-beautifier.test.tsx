@@ -49,6 +49,16 @@ describe('TextBeautifier - Responsive Layout', () => {
     expect(preElement?.className).toContain('min-h-[300px]');
   });
 
+  it('should have flex-1 on both textarea and pre for equal height growth', () => {
+    const { container } = render(<TextBeautifier />);
+
+    const textarea = container.querySelector('textarea');
+    const preElement = container.querySelector('pre');
+
+    expect(textarea?.className).toContain('flex-1');
+    expect(preElement?.className).toContain('flex-1');
+  });
+
   it('should have gap between columns', () => {
     const { container } = render(<TextBeautifier />);
 
