@@ -1,21 +1,43 @@
 import { useState } from 'react';
 import { parseBullets } from '../utils/parse-bullets';
+import { bulletsToHtml } from '../utils/bullets-to-html';
 
 export function TextBeautifier() {
   const [input, setInput] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<'text' | 'html' | null>(null);
 
   const output = parseBullets(input);
 
-  const handleCopy = async () => {
+  // Copy as plain markdown text
+  const handleCopyText = async () => {
     if (!output) return;
 
     try {
       await navigator.clipboard.writeText(output);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopied('text');
+      setTimeout(() => setCopied(null), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+    }
+  };
+
+  // Copy as HTML (renders as bullets in MS Teams, Word, etc.)
+  const handleCopyHtml = async () => {
+    if (!output) return;
+
+    try {
+      const html = bulletsToHtml(output);
+      const blob = new Blob([html], { type: 'text/html' });
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/html': blob,
+          'text/plain': new Blob([output], { type: 'text/plain' }),
+        }),
+      ]);
+      setCopied('html');
+      setTimeout(() => setCopied(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy HTML:', err);
     }
   };
 
@@ -50,15 +72,26 @@ export function TextBeautifier() {
               <label className="text-sm font-medium text-gray-700">
                 Output (clean markdown)
               </label>
-              <button
-                onClick={handleCopy}
-                disabled={!output}
-                className="px-3 py-1 text-sm bg-blue-600 text-white rounded
-                           hover:bg-blue-700 disabled:bg-gray-400
-                           disabled:cursor-not-allowed transition-colors"
-              >
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCopyText}
+                  disabled={!output}
+                  className="px-3 py-1 text-sm bg-gray-600 text-white rounded
+                             hover:bg-gray-700 disabled:bg-gray-400
+                             disabled:cursor-not-allowed transition-colors"
+                >
+                  {copied === 'text' ? 'Copied!' : 'Copy Text'}
+                </button>
+                <button
+                  onClick={handleCopyHtml}
+                  disabled={!output}
+                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded
+                             hover:bg-blue-700 disabled:bg-gray-400
+                             disabled:cursor-not-allowed transition-colors"
+                >
+                  {copied === 'html' ? 'Copied!' : 'Copy HTML'}
+                </button>
+              </div>
             </div>
             <pre
               className="flex-1 min-h-[300px] p-4 bg-white border border-gray-300
@@ -71,7 +104,7 @@ export function TextBeautifier() {
 
         {/* Help text */}
         <p className="mt-4 text-sm text-gray-500">
-          Paste text with dashes or bullets. Indented lines become nested bullets.
+          Paste text with dashes or bullets. <strong>Copy Text</strong> = markdown, <strong>Copy HTML</strong> = rich bullets for MS Teams.
         </p>
       </div>
     </div>
