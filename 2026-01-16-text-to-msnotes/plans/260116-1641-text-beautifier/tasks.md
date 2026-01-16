@@ -43,7 +43,7 @@
 - [x] Task 8: Add unit tests for parse-bullets utility
   - **AC:** Install vitest, create `src/utils/parse-bullets.test.ts`, tests pass
   - **Test cases:** empty input, single bullet, nested bullets, plain text lines, multiple spaces normalization
-- [ ] Task 9: Add unit tests for bullets-to-html utility
+- [x] Task 9: Add unit tests for bullets-to-html utility
   - **AC:** Create `src/utils/bullets-to-html.test.ts`, tests pass
   - **Test cases:** empty input, flat list, nested list
 - [ ] Task 10: Run production build

@@ -63,3 +63,20 @@ Dev server successfully started with Vite v7.3.1 in 221ms. Server running at htt
 **Status:** Completed | **Completed:** 17:48
 
 Created comprehensive test suite for parseBullets() utility with 32 test cases covering: empty input handling, single bullet conversion, nested bullet preservation (up to 4 levels), plain text line conversion, multiple spaces normalization, real-world examples, and edge cases. Installed vitest, configured npm test script, and verified all tests pass. Test coverage includes empty strings, whitespace-only input, various bullet types (-, *, •), indentation levels with tabs and spaces, content cleaning, and special characters/unicode handling.
+
+## [260116-1641-text-beautifier] Task 9: Add unit tests for bullets-to-html utility
+**Status:** In Progress | **Time:** 2026-01-16 17:48 | **Model:** haiku | **Mode:** production
+
+### Plan
+- Read the bullets-to-html utility to understand the implementation
+- Create src/utils/bullets-to-html.test.ts with test cases
+- Test cases: empty input, flat list, nested list
+- Run tests and ensure all pass
+
+- [17:48] Started: Add unit tests for bullets-to-html utility
+- [17:49] Completed: bullets-to-html unit tests created and all passing
+
+### Result
+**Status:** Completed | **Completed:** 17:49
+
+Created comprehensive test suite for bulletsToHtml() utility with 30 test cases covering: empty input handling, flat list conversion, nested list preservation, complex structures with varied nesting depths, edge cases (empty lines, trailing/leading newlines, whitespace-only items), indentation format validation (2, 4, 6+ spaces), output structure validation (proper ul/li tag nesting and closure), and special content handling (unicode, special characters, html-like content). All tests passing.

@@ -7,6 +7,8 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #6350 | 5:49 PM | ✅ | Task 8 completion appended to centralized ralph-log.md | ~294 |
+| #6349 | 5:48 PM | 🔵 | Ralph-log.md exists with partial Task 1, 5, and 7 entries from prototype phase | ~286 |
 | #6318 | 4:59 PM | ✅ | Task 7 completion synced to centralized Ralph log | ~263 |
 | #6304 | 4:58 PM | ✅ | Task 7 logged to centralized Ralph execution log | ~284 |
 | #6300 | " | 🔵 | Ralph execution log contains subset of progress entries | ~296 |
