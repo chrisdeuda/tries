@@ -7,7 +7,8 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
-| #6356 | 5:49 PM | 🔴 | Fixed test expectation for whitespace-only bullet items to include empty li tags | ~137 |
+| #6358 | 5:49 PM | 🔴 | Corrected extreme nesting test to expect 9 levels instead of 6 | ~276 |
+| #6356 | " | 🔴 | Fixed test expectation for whitespace-only bullet items to include empty li tags | ~137 |
 | #6355 | " | 🟣 | Comprehensive unit test suite created for bullets-to-html utility | ~491 |
 | #6354 | " | 🔵 | Bullets-to-html utility implementation reviewed for test coverage planning | ~395 |
 | #6344 | 5:48 PM | 🔴 | Fixed real-world example test to match actual whitespace normalization behavior | ~272 |

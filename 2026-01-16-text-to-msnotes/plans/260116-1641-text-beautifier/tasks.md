@@ -46,7 +46,7 @@
 - [x] Task 9: Add unit tests for bullets-to-html utility
   - **AC:** Create `src/utils/bullets-to-html.test.ts`, tests pass
   - **Test cases:** empty input, flat list, nested list
-- [ ] Task 10: Run production build
+- [x] Task 10: Run production build
   - **AC:** `npm run build` succeeds, `dist/` folder created
 - [ ] Task 11: Test production preview
   - **AC:** `npm run preview` works correctly
