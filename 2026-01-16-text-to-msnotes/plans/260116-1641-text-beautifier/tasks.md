@@ -11,7 +11,7 @@
   - **AC:** `src/components/` and `src/utils/` exist, no `App.css`
 
 ### Core Implementation
-- [ ] Task 4: Create parse-bullets.ts utility
+- [x] Task 4: Create parse-bullets.ts utility
   - **AC:** File exists at `src/utils/parse-bullets.ts` with `parseBullets()` function
   - **Ref:** See `phase-02-parsing-logic.md` for exact code
 - [ ] Task 5: Create TextBeautifier component
