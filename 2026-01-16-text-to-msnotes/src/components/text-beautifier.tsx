@@ -74,22 +74,23 @@ export function TextBeautifier() {
               </label>
               <div className="flex gap-2">
                 <button
+                  onClick={handleCopyHtml}
+                  disabled={!output}
+                  className="px-4 py-1.5 text-sm font-medium bg-blue-600 text-white rounded
+                             hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500
+                             disabled:cursor-not-allowed transition-colors shadow-sm"
+                >
+                  {copied === 'html' ? 'Copied!' : 'Copy HTML'}
+                </button>
+                <button
                   onClick={handleCopyText}
                   disabled={!output}
-                  className="px-3 py-1 text-sm bg-gray-600 text-white rounded
-                             hover:bg-gray-700 disabled:bg-gray-400
+                  className="px-3 py-1.5 text-sm border border-gray-300 text-gray-700 bg-white rounded
+                             hover:bg-gray-50 hover:border-gray-400 disabled:bg-gray-100
+                             disabled:text-gray-400 disabled:border-gray-200
                              disabled:cursor-not-allowed transition-colors"
                 >
                   {copied === 'text' ? 'Copied!' : 'Copy Text'}
-                </button>
-                <button
-                  onClick={handleCopyHtml}
-                  disabled={!output}
-                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded
-                             hover:bg-blue-700 disabled:bg-gray-400
-                             disabled:cursor-not-allowed transition-colors"
-                >
-                  {copied === 'html' ? 'Copied!' : 'Copy HTML'}
                 </button>
               </div>
             </div>

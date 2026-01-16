@@ -77,4 +77,28 @@ describe('TextBeautifier - Responsive Layout', () => {
     expect(inputPanel?.className).toContain('md:border-gray-200');
     expect(inputPanel?.className).toContain('md:pr-4');
   });
+
+  it('should have Copy HTML button as primary (blue background)', () => {
+    const { getByRole } = render(<TextBeautifier />);
+
+    const copyHtmlButton = getByRole('button', { name: 'Copy HTML' });
+
+    expect(copyHtmlButton).toBeTruthy();
+    expect(copyHtmlButton.className).toContain('bg-blue-600');
+    expect(copyHtmlButton.className).toContain('text-white');
+    expect(copyHtmlButton.className).toContain('font-medium');
+    expect(copyHtmlButton.className).toContain('shadow-sm');
+  });
+
+  it('should have Copy Text button as secondary (outline style)', () => {
+    const { getByRole } = render(<TextBeautifier />);
+
+    const copyTextButton = getByRole('button', { name: 'Copy Text' });
+
+    expect(copyTextButton).toBeTruthy();
+    expect(copyTextButton.className).toContain('border');
+    expect(copyTextButton.className).toContain('border-gray-300');
+    expect(copyTextButton.className).toContain('text-gray-700');
+    expect(copyTextButton.className).toContain('bg-white');
+  });
 });

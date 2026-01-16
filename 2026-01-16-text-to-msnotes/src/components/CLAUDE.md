@@ -7,6 +7,11 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #6473 | 6:23 PM | 🔴 | Tests refactored to use getByRole for unambiguous button selection | ~364 |
+| #6468 | " | 🟣 | Added test coverage for copy button styling and visual hierarchy | ~377 |
+| #6467 | " | 🔵 | Existing test suite covers responsive layout but lacks button styling tests | ~382 |
+| #6465 | " | 🟣 | Copy buttons reordered and restyled with primary/secondary visual hierarchy | ~485 |
+| #6460 | 6:22 PM | 🔵 | TextBeautifier component already implements primary/secondary button styling | ~377 |
 | #6451 | 6:21 PM | 🟣 | Test Coverage Added for Visual Column Separator | ~356 |
 | #6449 | 6:20 PM | 🟣 | Visual Column Separator Implemented in TextBeautifier Component | ~358 |
 | #6443 | " | 🔵 | Reviewed Current TextBeautifier Component Structure | ~411 |

@@ -7,6 +7,8 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #6463 | 6:23 PM | ✅ | Task 15 logged to ralph-log.md for centralized execution tracking | ~282 |
+| #6461 | 6:22 PM | 🔵 | Ralph execution log shows completed UI polish tasks through Task 14 | ~423 |
 | #6437 | 6:20 PM | ✅ | Task 13 completion logged to Ralph execution history | ~209 |
 | #6423 | 6:19 PM | ✅ | Task 13 logged to Ralph execution log | ~204 |
 | #6421 | " | ✅ | Task 12 completion documented in Ralph execution log | ~344 |

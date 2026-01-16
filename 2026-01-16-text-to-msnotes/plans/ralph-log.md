@@ -166,3 +166,22 @@ Verified that both textarea and pre elements already have correct implementation
 **Status:** Completed | **Completed:** 18:21
 
 Added visual column separator to the Input Panel with md:border-r md:border-gray-200 classes for desktop view. Added md:pr-4 padding to maintain proper spacing. Created comprehensive test to verify border classes exist on input panel. All 70 tests passing. No lint errors. The border separator only appears on desktop view (>= 768px) due to md: prefix, maintaining responsive design for mobile stacking.
+## [260116-1641-text-beautifier] Task 15: Improve copy button grouping
+**Status:** In Progress | **Time:** 2026-01-16 18:22 | **Model:** sonnet | **Mode:** production
+
+### Plan
+- Review current button implementation and styling
+- Update "Copy HTML" button as primary (blue, more prominent)
+- Update "Copy Text" button as secondary (outline/gray, less prominent)
+- Add visual gap/grouping between buttons
+- Ensure clear visual hierarchy
+- Add test case to verify button styling
+- Run full test suite to ensure no regressions
+- Verify visual appearance in dev server
+
+- [18:23] Completed: Copy button grouping improved with clear visual hierarchy
+
+### Result
+**Status:** Completed | **Completed:** 18:23
+
+Improved copy button grouping to establish clear visual hierarchy. Updated button order: Copy HTML (primary) now appears first, Copy Text (secondary) second. Copy HTML styled as primary with blue background (bg-blue-600), white text, font-medium weight, larger padding (px-4), and shadow-sm for depth. Copy Text styled as secondary with outline design: white background, gray border (border-gray-300), gray text (text-gray-700), smaller padding (px-3). Both buttons retain gap-2 spacing and disabled states with appropriate visual feedback. Added 2 comprehensive test cases verifying primary and secondary button styling. All 72 tests passing. No lint errors. Visual hierarchy clearly communicates Copy HTML as the recommended action for MS Teams rich text pasting.
