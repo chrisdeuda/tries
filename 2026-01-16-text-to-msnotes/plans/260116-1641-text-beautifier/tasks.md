@@ -40,7 +40,7 @@
 
 ## Phase 2: Quality (RALPH_MODE=production)
 
-- [ ] Task 8: Add unit tests for parse-bullets utility
+- [x] Task 8: Add unit tests for parse-bullets utility
   - **AC:** Install vitest, create `src/utils/parse-bullets.test.ts`, tests pass
   - **Test cases:** empty input, single bullet, nested bullets, plain text lines, multiple spaces normalization
 - [ ] Task 9: Add unit tests for bullets-to-html utility

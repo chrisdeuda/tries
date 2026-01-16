@@ -46,3 +46,20 @@ Created src/components/text-beautifier.tsx with two-panel layout (input/output t
 **Status:** Completed | **Completed:** 16:57
 
 Dev server successfully started with Vite v7.3.1 in 221ms. Server running at http://localhost:5173/ with no errors. Page loads correctly with root div element. Background task ID: b35934e.
+
+## [260116-1641-text-beautifier] Task 8: Add unit tests for parse-bullets utility
+**Status:** In Progress | **Time:** 2026-01-16 17:46 | **Model:** haiku | **Mode:** production
+
+### Plan
+- Install vitest as dev dependency
+- Create src/utils/parse-bullets.test.ts with comprehensive test cases
+- Test cases: empty input, single bullet, nested bullets, plain text lines, multiple spaces normalization
+- Run tests and ensure all pass
+
+- [17:46] Started: Add unit tests for parse-bullets utility
+- [17:48] Completed: parse-bullets unit tests created and all passing
+
+### Result
+**Status:** Completed | **Completed:** 17:48
+
+Created comprehensive test suite for parseBullets() utility with 32 test cases covering: empty input handling, single bullet conversion, nested bullet preservation (up to 4 levels), plain text line conversion, multiple spaces normalization, real-world examples, and edge cases. Installed vitest, configured npm test script, and verified all tests pass. Test coverage includes empty strings, whitespace-only input, various bullet types (-, *, •), indentation levels with tabs and spaces, content cleaning, and special characters/unicode handling.
