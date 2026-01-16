@@ -48,5 +48,5 @@
   - **Test cases:** empty input, flat list, nested list
 - [x] Task 10: Run production build
   - **AC:** `npm run build` succeeds, `dist/` folder created
-- [ ] Task 11: Test production preview
+- [x] Task 11: Test production preview
   - **AC:** `npm run preview` works correctly
