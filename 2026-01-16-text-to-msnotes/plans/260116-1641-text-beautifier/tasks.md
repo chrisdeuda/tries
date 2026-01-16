@@ -62,7 +62,7 @@
   - **AC:** Both textarea and output pre have matching heights
   - **Implementation:** Use `flex-1` on both panels, ensure `min-h-[300px]` consistent
 
-- [ ] Task 14: Add visual column separator
+- [x] Task 14: Add visual column separator
   - **AC:** Subtle vertical divider between columns on desktop view
   - **Implementation:** Add `md:border-r md:border-gray-200` to Column A or use gap styling
 

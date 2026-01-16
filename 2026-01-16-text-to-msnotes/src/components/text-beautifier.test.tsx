@@ -65,4 +65,16 @@ describe('TextBeautifier - Responsive Layout', () => {
     const gridContainer = container.querySelector('.grid');
     expect(gridContainer?.className).toContain('gap-4');
   });
+
+  it('should have visual column separator on desktop (border-right on input panel)', () => {
+    const { container } = render(<TextBeautifier />);
+
+    // Find the input panel (first flex flex-col)
+    const inputPanel = container.querySelector('.flex.flex-col');
+
+    expect(inputPanel).toBeTruthy();
+    expect(inputPanel?.className).toContain('md:border-r');
+    expect(inputPanel?.className).toContain('md:border-gray-200');
+    expect(inputPanel?.className).toContain('md:pr-4');
+  });
 });

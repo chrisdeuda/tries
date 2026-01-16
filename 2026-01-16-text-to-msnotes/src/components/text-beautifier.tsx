@@ -52,7 +52,7 @@ export function TextBeautifier() {
         {/* Two-panel layout */}
         <div className="grid md:grid-cols-2 gap-4">
           {/* Input Panel */}
-          <div className="flex flex-col">
+          <div className="flex flex-col md:border-r md:border-gray-200 md:pr-4">
             <label className="text-sm font-medium text-gray-700 mb-2">
               Input (paste your messy text)
             </label>

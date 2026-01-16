@@ -148,3 +148,21 @@ Verified 2-column responsive layout implementation. The existing code already im
 **Status:** Completed | **Completed:** 18:19
 
 Verified that both textarea and pre elements already have correct implementation for equal height columns. Both elements use flex-1 class for equal flex growth and min-h-[300px] for consistent minimum height. Added comprehensive test to explicitly verify flex-1 on both elements. All 69 tests passing. No code changes to component needed - existing implementation already meets acceptance criteria.
+## [260116-1641-text-beautifier] Task 14: Add visual column separator
+**Status:** In Progress | **Time:** 2026-01-16 18:20 | **Model:** sonnet | **Mode:** production
+
+### Plan
+- Review plan.md for ASCII layout specification and separator requirements
+- Add md:border-r md:border-gray-200 to Column A (Input Panel) for desktop separator
+- Test responsive behavior to ensure separator only appears on desktop
+- Add test case to verify border classes exist on input panel
+- Run full test suite to ensure no regressions
+- Verify visual appearance in dev server
+
+- [18:20] Started: Add visual column separator
+- [18:21] Completed: Visual column separator added and tested
+
+### Result
+**Status:** Completed | **Completed:** 18:21
+
+Added visual column separator to the Input Panel with md:border-r md:border-gray-200 classes for desktop view. Added md:pr-4 padding to maintain proper spacing. Created comprehensive test to verify border classes exist on input panel. All 70 tests passing. No lint errors. The border separator only appears on desktop view (>= 768px) due to md: prefix, maintaining responsive design for mobile stacking.
