@@ -14,10 +14,10 @@
 - [x] Task 4: Create parse-bullets.ts utility
   - **AC:** File exists at `src/utils/parse-bullets.ts` with `parseBullets()` function
   - **Ref:** See `phase-02-parsing-logic.md` for exact code
-- [ ] Task 5: Create TextBeautifier component
+- [x] Task 5: Create TextBeautifier component
   - **AC:** File exists at `src/components/text-beautifier.tsx`
   - **Ref:** See `phase-03-ui-component.md` for exact code
-- [ ] Task 6: Wire up App.tsx to render TextBeautifier
+- [x] Task 6: Wire up App.tsx to render TextBeautifier
   - **AC:** `src/App.tsx` imports and renders `<TextBeautifier />`
 
 ### Verification
