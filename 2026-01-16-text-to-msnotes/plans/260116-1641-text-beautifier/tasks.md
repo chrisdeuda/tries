@@ -21,7 +21,7 @@
   - **AC:** `src/App.tsx` imports and renders `<TextBeautifier />`
 
 ### Verification
-- [ ] Task 7: Verify dev server runs
+- [x] Task 7: Verify dev server runs
   - **AC:** `npm run dev` starts, page loads at localhost:5173
 
 ## CHECKPOINT
