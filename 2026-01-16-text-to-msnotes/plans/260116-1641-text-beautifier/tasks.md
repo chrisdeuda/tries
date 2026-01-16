@@ -50,3 +50,35 @@
   - **AC:** `npm run build` succeeds, `dist/` folder created
 - [x] Task 11: Test production preview
   - **AC:** `npm run preview` works correctly
+
+## Phase 3: UI Polish (RALPH_MODE=production)
+
+### 2-Column Layout Refinements
+- [x] Task 12: Verify 2-column responsive behavior
+  - **AC:** On mobile (< 768px), columns stack vertically; on desktop, side-by-side
+  - **Test:** Resize browser window, verify layout switches at md breakpoint
+
+- [ ] Task 13: Add equal height columns
+  - **AC:** Both textarea and output pre have matching heights
+  - **Implementation:** Use `flex-1` on both panels, ensure `min-h-[300px]` consistent
+
+- [ ] Task 14: Add visual column separator
+  - **AC:** Subtle vertical divider between columns on desktop view
+  - **Implementation:** Add `md:border-r md:border-gray-200` to Column A or use gap styling
+
+- [ ] Task 15: Improve copy button grouping
+  - **AC:** Copy buttons visually grouped with gap, clear hierarchy
+  - **Implementation:** "Copy HTML" as primary (blue), "Copy Text" as secondary (outline/gray)
+
+## CHECKPOINT
+
+- [ ] CHECKPOINT: Visual review
+  - **AC:** 2-column layout matches ASCII spec in plan.md
+  - **PAUSE:** Manual visual verification before final build
+
+## Phase 4: Final Build
+
+- [ ] Task 16: Final production build
+  - **AC:** `npm run build` succeeds with no warnings
+- [ ] Task 17: Commit all changes
+  - **AC:** All UI polish changes committed with proper message
