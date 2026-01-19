@@ -72,7 +72,7 @@
 
 ## CHECKPOINT
 
-- [ ] CHECKPOINT: Visual review
+- [x] CHECKPOINT: Visual review
   - **AC:** 2-column layout matches ASCII spec in plan.md
   - **PAUSE:** Manual visual verification before final build
 
