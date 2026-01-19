@@ -20,8 +20,9 @@ export function parseBullets(input: string): string {
     const normalized = line.replace(/\t/g, '  ');
     const leadingSpaces = normalized.match(/^(\s*)/)?.[1].length ?? 0;
 
-    // Calculate nesting level (2 spaces = 1 level, max 4 levels)
-    const level = Math.min(Math.floor(leadingSpaces / 2), 4);
+    // Calculate nesting level (1+ spaces = nested, max 4 levels)
+    // Use ceil to be lenient - even 1 space counts as 1 level
+    const level = Math.min(Math.ceil(leadingSpaces / 2), 4);
 
     // Remove leading bullet characters and whitespace, normalize inner spaces
     const content = normalized
