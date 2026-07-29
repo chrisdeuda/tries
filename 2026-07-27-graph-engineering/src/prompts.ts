@@ -18,7 +18,11 @@ Task: ${state.task}
 Inspect the repository as needed, but do not modify any file or run Codex. Keep scope exact.
 Read the root AGENTS.md when present. Copy validation_commands exactly from its setup, build, test, validation, or check instructions; return an empty list when it documents no applicable commands.
 Return only one JSON object with this shape:
-{"plan":"concrete plan","research_required":false,"research_reason":"","review_required":false,"review_reason":"","validation_coverage_complete":true,"validation_commands":["advisory command"]}
+{"plan":"concrete plan (can be brief for audit/investigation tasks","investigation_required":false,"research_required":false,"research_reason":"","review_required":false,"review_reason":"","validation_coverage_complete":true,"validation_commands":["advisory command"]}
+
+Set investigation_required to true when the task is an audit, security review, scoping investigation, IDOR check, vulnerability scan, or requires structural code analysis before implementation.
+Set research_required when the task needs external documentation or library research.
+Set review_required for auth, security, migration, or public API changes.
 Do not invent or rewrite validation commands. Do not wrap the JSON in Markdown.`;
 }
 

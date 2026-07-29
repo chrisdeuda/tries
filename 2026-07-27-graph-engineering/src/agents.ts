@@ -215,7 +215,7 @@ export async function runCommand(
 }
 
 const PlannerOutputSchema = z.strictObject({
-  plan: z.string().min(1),
+  plan: z.string().optional(),
   research_required: z.boolean(),
   research_reason: z.string(),
   investigation_required: z.boolean(),
