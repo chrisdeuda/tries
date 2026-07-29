@@ -89,6 +89,21 @@ Do not push, deploy, commit, reset, clean, switch branches, or open a pull reque
 Return a concise structured summary when finished.`;
 }
 
+export function codexReviewerPrompt(state: WorkflowStateValue, diff: string): string {
+  return `You are auditing code changes for correctness and security.
+Task: ${state.task}
+Plan: ${state.plan ?? "audit"}
+Investigation: ${state.investigationReport ? compactModelOutput(state.investigationReport, 4000) : state.investigationReport || "none"}
+Codex summary: ${state.implementationSummary || "audit findings review"}
+Validation passed: ${String(state.validationPassed)}
+Git diff:
+${compactModelOutput(diff, 30000)}
+
+Audit the findings. Check scope, correctness, security.
+Return a concise summary of your review.
+Do not modify files.`;
+}
+
 export function reviewerPrompt(state: WorkflowStateValue, diff: string): string {
   const validation = compactModelOutput(state.validationResults
     .map(

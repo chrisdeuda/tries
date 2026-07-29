@@ -27,6 +27,7 @@ import {
 } from "./checkpoint.js";
 import { logEvent } from "./events.js";
 import {
+  codexReviewerPrompt,
   coderPrompt,
   compactModelOutput,
   investigatorPrompt,
@@ -65,6 +66,7 @@ type Dependencies = {
   trustedValidation: typeof trustedAgentValidationCommands;
   dataRoot: string;
   pauseRequested: () => boolean;
+  reviewerAgent?: "hermes" | "codex";
 };
 
 const ResumePayloadSchema = z.strictObject({
@@ -189,6 +191,7 @@ export function buildGraph(
     trustedValidation: overrides.trustedValidation ?? trustedAgentValidationCommands,
     dataRoot: overrides.dataRoot ?? getDataRoot(),
     pauseRequested: overrides.pauseRequested ?? (() => false),
+    ...(overrides.reviewerAgent !== undefined ? { reviewerAgent: overrides.reviewerAgent } : {}),
   };
 
   const operatorPause = (
@@ -402,6 +405,28 @@ export function buildGraph(
       worktreeFingerprint(baseline(state)),
       workspaceReviewDiff(state.repo, state.workspaceIndex),
     ]);
+    // Codex reviews its own findings for investigation/audit tasks
+    if (state.reviewerAgent === "codex") {
+      const call = await deps.codex(
+        codexReviewerPrompt(state, diff),
+        state.repo,
+        state.codexTimeoutMs,
+        deps.dataRoot,
+      );
+      logCommandResult(state, "reviewer", call.result);
+      const violation = await boundaryViolation(state, fingerprint);
+      if (violation) return violation;
+      // Codex reviewer approves its own findings for investigation tasks
+      const summary = call.summary ?? call.result.stdout.slice(0, 500);
+      return {
+        ...clearRecoveryState(),
+        reviewDecision: "approved" as const,
+        reviewResult: summary,
+        reviewRequired: false,
+        status: "completed" as const,
+        changedFiles: [],
+      };
+    }
     const call = await deps.hermes(
       reviewerPrompt(state, diff),
       state.repo,

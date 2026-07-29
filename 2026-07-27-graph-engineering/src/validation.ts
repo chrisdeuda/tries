@@ -19,6 +19,7 @@ export type WorkflowConfig = {
   reviewRequired: boolean;
   researchMode: "auto" | "off";
   investigationMode: "auto" | "off";
+  reviewerAgent?: "hermes" | "codex";
   hermesTimeoutMs: number;
   codexTimeoutMs: number;
   validationTimeoutMs: number;
@@ -178,6 +179,7 @@ export async function loadWorkflowConfig(
     reviewRequired: overrides.reviewRequired ?? config.review_required,
     researchMode: overrides.researchMode ?? config.research_mode,
     investigationMode: overrides.investigationMode ?? "auto",
+    ...(overrides.reviewerAgent ? { reviewerAgent: overrides.reviewerAgent } : {}),
     hermesTimeoutMs:
       overrides.hermesTimeoutMs ?? config.hermes_timeout_seconds * 1_000,
     codexTimeoutMs: overrides.codexTimeoutMs ?? config.codex_timeout_seconds * 1_000,

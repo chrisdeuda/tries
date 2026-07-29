@@ -67,6 +67,7 @@ export const WorkflowState = new StateSchema({
 
   userRequestedReview: z.boolean().default(false),
   reviewRequired: z.boolean().default(false),
+  reviewerAgent: z.enum(["hermes", "codex"]).optional(),
   reviewReason: z.string().default(""),
   reviewRiskReasons: z.array(z.string()).default([]),
   reviewResult: z.string().optional(),

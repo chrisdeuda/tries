@@ -79,7 +79,7 @@ Run options:
   --task TASK                       Exact change to make. Prompted for in the TUI when omitted.
   --validate COMMAND                Override validation from AGENTS.md. Repeatable.
   --max-attempts N                  Positive limit for implementation attempts.
-  --review-required                 Require Hermes review after implementation and validation.
+  --reviewer-agent hermes|codex        Agent for review node. Codex for audit/investigation tasks, Hermes for implementation reviews.
   --research-mode auto|off          Allow or disable optional Hermes research.
   --investigation-mode auto|off       Allow or disable structural code investigation.
   --hermes-timeout-seconds N        Positive Hermes timeout in seconds.
@@ -180,6 +180,10 @@ function configOverrides(parsed: Parsed): ConfigOverrides {
   if (investigationMode !== undefined && investigationMode !== "auto" && investigationMode !== "off") {
     throw new Error("--investigation-mode must be auto or off.");
   }
+  const reviewerAgent = one(parsed, "--reviewer-agent");
+  if (reviewerAgent !== undefined && reviewerAgent !== "hermes" && reviewerAgent !== "codex") {
+    throw new Error("--reviewer-agent must be hermes or codex.");
+  }
   return {
     ...(parsed.options.has("--validate")
       ? { validationCommands: parsed.options.get("--validate")! }
@@ -190,6 +194,7 @@ function configOverrides(parsed: Parsed): ConfigOverrides {
     ...(parsed.options.has("--review-required") ? { reviewRequired: true } : {}),
     ...(researchMode ? { researchMode } : {}),
     ...(investigationMode ? { investigationMode } : {}),
+    ...(reviewerAgent ? { reviewerAgent } : {}),
     ...(seconds("--hermes-timeout-seconds")
       ? { hermesTimeoutMs: seconds("--hermes-timeout-seconds")! }
       : {}),
@@ -330,6 +335,7 @@ async function run(parsed: Parsed): Promise<void> {
     "--review-required",
     "--research-mode",
     "--investigation-mode",
+    "--reviewer-agent",
     "--hermes-timeout-seconds",
     "--codex-timeout-seconds",
     "--validation-timeout-seconds",
@@ -395,6 +401,7 @@ async function run(parsed: Parsed): Promise<void> {
           userRequestedReview: workflowConfig.reviewRequired,
           researchMode: workflowConfig.researchMode,
           investigationMode: workflowConfig.investigationMode,
+          reviewerAgent: workflowConfig.reviewerAgent,
           attempt: 1,
           maxAttempts: workflowConfig.maxAttempts,
           status: "running",
