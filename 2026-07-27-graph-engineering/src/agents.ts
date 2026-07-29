@@ -1,0 +1,466 @@
+import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { parseEnv } from "node:util";
+import * as z from "zod";
+import { logEvent } from "./events.js";
+import { OUTPUT_LIMIT_BYTES, type CommandResult } from "./state.js";
+
+type RunOptions = {
+  cwd: string;
+  timeoutMs: number;
+  env?: NodeJS.ProcessEnv;
+  recordedArgv?: string[];
+  maxBytes?: number;
+  redactOutput?: boolean;
+  traceLabel?: string;
+  traceLine?: (stream: "stdout" | "stderr", line: string) => string | undefined;
+};
+
+type CommandTracing = false | "summary" | "full";
+
+let commandTracing: CommandTracing = false;
+
+export function setCommandTracing(mode: boolean | "summary" | "full"): void {
+  commandTracing = mode === true ? "full" : mode;
+}
+
+function traceCommand(event: string, fields: Record<string, unknown>): void {
+  logEvent(event, fields);
+}
+
+function capped(text: string, maxBytes: number): string {
+  const bytes = Buffer.from(text);
+  if (bytes.length <= maxBytes) return text;
+  return `${bytes.subarray(0, maxBytes).toString("utf8")}\n[output truncated]`;
+}
+
+export function redact(text: string): string {
+  return text
+    .replace(/\b(sk-[A-Za-z0-9_-]{16,})\b/g, "[REDACTED]")
+    .replace(/((?:api[_-]?key|token|password|secret)\s*[=:]\s*)\S+/gi, "$1[REDACTED]");
+}
+
+export function loadAgentEnvironment(
+  path = fileURLToPath(new URL("../../.env", import.meta.url)),
+): void {
+  try {
+    const values = parseEnv(readFileSync(path, "utf8"));
+    for (const [name, value] of Object.entries(values)) {
+      if (process.env[name] === undefined) process.env[name] = value;
+    }
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+}
+
+function agentExecutable(name: "HERMES_PATH" | "CODEX_PATH", fallback: string): string {
+  return process.env[name]?.trim() || fallback;
+}
+
+export async function runCommand(
+  executable: string,
+  args: string[],
+  options: RunOptions,
+): Promise<CommandResult> {
+  const started = performance.now();
+  const maxBytes = options.maxBytes ?? OUTPUT_LIMIT_BYTES;
+  return await new Promise((resolve, reject) => {
+    let stdout = "";
+    let stderr = "";
+    let timedOut = false;
+    let spawnError: Error | undefined;
+    const child = spawn(executable, args, {
+      cwd: options.cwd,
+      env: options.env ?? process.env,
+      stdio: ["ignore", "pipe", "pipe"],
+      detached: true,
+    });
+    const tracing = commandTracing !== false && options.traceLabel !== undefined;
+    let tracedStdout = "";
+    let tracedStderr = "";
+    const traceLines = (stream: "stdout" | "stderr", chunk: string): void => {
+      if (!tracing || commandTracing !== "full") return;
+      const pending = (stream === "stdout" ? tracedStdout : tracedStderr) + chunk;
+      const lines = pending.split(/\r?\n/);
+      const remainder = lines.pop() ?? "";
+      if (stream === "stdout") tracedStdout = remainder;
+      else tracedStderr = remainder;
+      for (const line of lines) {
+        const text = options.traceLine ? options.traceLine(stream, line) : line;
+        if (text === undefined) continue;
+        traceCommand("command_output", {
+          label: options.traceLabel,
+          stream,
+          text: redact(text),
+        });
+      }
+    };
+    if (tracing) {
+      traceCommand("command_start", {
+        label: options.traceLabel,
+        cwd: options.cwd,
+        argv: [executable, ...args].map(redact),
+        pid: child.pid,
+      });
+    }
+    child.stdout.setEncoding("utf8").on("data", (chunk: string) => {
+      const capturing = Buffer.byteLength(stdout) <= maxBytes;
+      if (capturing) {
+        stdout += chunk;
+      }
+      if (capturing || options.traceLine) traceLines("stdout", chunk);
+    });
+    child.stderr.setEncoding("utf8").on("data", (chunk: string) => {
+      const capturing = Buffer.byteLength(stderr) <= maxBytes;
+      if (capturing) {
+        stderr += chunk;
+      }
+      if (capturing || options.traceLine) traceLines("stderr", chunk);
+    });
+    child.on("error", (error) => {
+      spawnError = error;
+    });
+    let forceKillTimer: NodeJS.Timeout | undefined;
+    const killProcessGroup = (signal: NodeJS.Signals): void => {
+      if (!child.pid) return;
+      try {
+        process.kill(-child.pid, signal);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ESRCH") {
+          spawnError = error instanceof Error ? error : new Error(String(error));
+          child.kill(signal);
+        }
+      }
+    };
+    let interruptedSignal: NodeJS.Signals | undefined;
+    const interrupt = (signal: NodeJS.Signals): void => {
+      interruptedSignal ??= signal;
+      killProcessGroup("SIGTERM");
+      forceKillTimer ??= setTimeout(() => killProcessGroup("SIGKILL"), 1_000);
+      forceKillTimer.unref();
+    };
+    const onSigint = () => interrupt("SIGINT");
+    const onSigterm = () => interrupt("SIGTERM");
+    process.once("SIGINT", onSigint);
+    process.once("SIGTERM", onSigterm);
+    const timer = setTimeout(() => {
+      timedOut = true;
+      killProcessGroup("SIGTERM");
+      forceKillTimer = setTimeout(() => killProcessGroup("SIGKILL"), 1_000);
+      forceKillTimer.unref();
+    }, options.timeoutMs);
+    const heartbeat = tracing
+      ? setInterval(() => {
+          traceCommand("command_running", {
+            label: options.traceLabel,
+            pid: child.pid,
+            durationMs: Math.max(0, Math.round(performance.now() - started)),
+          });
+        }, 10_000)
+      : undefined;
+    heartbeat?.unref();
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      process.off("SIGINT", onSigint);
+      process.off("SIGTERM", onSigterm);
+      if (heartbeat) clearInterval(heartbeat);
+      if (forceKillTimer) clearTimeout(forceKillTimer);
+      if (tracing) {
+        const finalStdout = options.traceLine?.("stdout", tracedStdout) ?? (options.traceLine ? undefined : tracedStdout);
+        if (finalStdout) {
+          traceCommand("command_output", {
+            label: options.traceLabel,
+            stream: "stdout",
+            text: redact(finalStdout),
+          });
+        }
+        const finalStderr = options.traceLine?.("stderr", tracedStderr) ?? (options.traceLine ? undefined : tracedStderr);
+        if (finalStderr) {
+          traceCommand("command_output", {
+            label: options.traceLabel,
+            stream: "stderr",
+            text: redact(finalStderr),
+          });
+        }
+        traceCommand("command_complete", {
+          label: options.traceLabel,
+          pid: child.pid,
+          exitCode: spawnError ? null : code,
+          timedOut,
+          durationMs: Math.max(0, Math.round(performance.now() - started)),
+        });
+      }
+      if (interruptedSignal) {
+        reject(new Error(`Command interrupted by ${interruptedSignal}.`));
+        return;
+      }
+      resolve({
+        argv: options.recordedArgv ?? [executable, ...args],
+        exitCode: spawnError ? null : code,
+        stdout: options.redactOutput === false ? capped(stdout, maxBytes) : redact(capped(stdout, maxBytes)),
+        stderr: (options.redactOutput === false ? (value: string) => value : redact)(
+          capped(
+            spawnError ? `${stderr}\n${spawnError.message}`.trim() : stderr,
+            maxBytes,
+          ),
+        ),
+        timedOut,
+        durationMs: Math.max(0, Math.round(performance.now() - started)),
+      });
+    });
+  });
+}
+
+const PlannerOutputSchema = z.strictObject({
+  plan: z.string().min(1),
+  research_required: z.boolean(),
+  research_reason: z.string(),
+  investigation_required: z.boolean(),
+  review_required: z.boolean(),
+  review_reason: z.string(),
+  validation_coverage_complete: z.boolean(),
+  validation_commands: z.array(z.string()),
+});
+
+const ResearchOutputSchema = z.strictObject({ findings: z.string().min(1) });
+const ReviewOutputSchema = z.strictObject({
+  decision: z.enum(["approved", "changes_requested", "human_required"]),
+  findings: z.string(),
+});
+const CodexOutputSchema = z.strictObject({ summary: z.string().min(1) });
+
+function short(value: unknown): string | undefined {
+  if (typeof value !== "string" || !value.trim()) return undefined;
+  const oneLine = value.replace(/\s+/g, " ").trim();
+  return oneLine.length > 180 ? `${oneLine.slice(0, 179)}…` : oneLine;
+}
+
+export function codexTraceLine(stream: "stdout" | "stderr", line: string): string | undefined {
+  if (stream === "stderr" || !line.trim()) return undefined;
+  let event: Record<string, unknown>;
+  try {
+    event = JSON.parse(line) as Record<string, unknown>;
+  } catch {
+    return undefined;
+  }
+  const item = event.item && typeof event.item === "object"
+    ? event.item as Record<string, unknown>
+    : undefined;
+  const type = event.type;
+  const itemType = item?.type;
+
+  if (type === "item.started" && itemType === "command_execution") {
+    const command = short(item?.command);
+    return command ? `Run: ${command}` : undefined;
+  }
+  if (type === "item.started" && itemType === "web_search") {
+    const query = short(item?.query);
+    return query ? `Search: ${query}` : "Searching the web.";
+  }
+  if (type === "item.started" && itemType === "mcp_tool_call") {
+    return `Tool: ${short(item?.tool) ?? short(item?.name) ?? "MCP call"}`;
+  }
+  if (type === "item.completed" && itemType === "file_change") {
+    const changes = Array.isArray(item?.changes) ? item.changes : [];
+    const paths = changes.flatMap((change) => {
+      if (!change || typeof change !== "object") return [];
+      const path = (change as Record<string, unknown>).path;
+      return typeof path === "string" ? [path] : [];
+    });
+    return paths.length > 0 ? `Changed: ${paths.join(", ")}` : "Files changed.";
+  }
+  if (type === "item.completed" && itemType === "agent_message") {
+    const message = short(item?.text);
+    return message ? `Codex: ${message}` : undefined;
+  }
+  if (type === "turn.completed") return "Codex turn completed.";
+  if (type === "turn.failed" || type === "error") {
+    return `Codex error: ${short(event.message) ?? short(event.error) ?? "unknown failure"}`;
+  }
+  return undefined;
+}
+
+export type PlannerOutput = z.infer<typeof PlannerOutputSchema>;
+export type ResearchOutput = z.infer<typeof ResearchOutputSchema>;
+export type InvestigatorOutput = z.infer<typeof InvestigatorOutputSchema>;
+export type ReviewOutput = z.infer<typeof ReviewOutputSchema>;
+
+function parseJson<T>(schema: z.ZodType<T>, text: string): T {
+  return schema.parse(JSON.parse(text.trim()));
+}
+
+const InvestigatorOutputSchema = z.strictObject({
+  findings: z.array(z.strictObject({
+    file: z.string(),
+    location: z.string(),
+    issue: z.string(),
+    severity: z.enum(["high", "medium", "low"]),
+    fix_required: z.string(),
+  })),
+  summary: z.string(),
+  recommendations: z.array(z.string()),
+});
+
+export async function runHermes(
+  prompt: string,
+  repo: string,
+  timeoutMs: number,
+  kind: "planner" | "research" | "investigator" | "reviewer",
+): Promise<{
+  result: CommandResult;
+  output?: PlannerOutput | ResearchOutput | InvestigatorOutput | ReviewOutput;
+}> {
+  const executable = agentExecutable("HERMES_PATH", "hermes");
+  const result = await runCommand(executable, ["-z", prompt], {
+    cwd: repo,
+    timeoutMs,
+    recordedArgv: [executable, "-z", "<prompt>"],
+    traceLabel: kind,
+  });
+  if (result.exitCode !== 0 || result.timedOut) return { result };
+  try {
+    const output =
+      kind === "planner"
+        ? parseJson(PlannerOutputSchema, result.stdout)
+        : kind === "research"
+          ? parseJson(ResearchOutputSchema, result.stdout)
+          : kind === "investigator"
+            ? parseJson(InvestigatorOutputSchema, result.stdout)
+            : parseJson(ReviewOutputSchema, result.stdout);
+    return { result, output };
+  } catch (error) {
+    return {
+      result: {
+        ...result,
+        exitCode: null,
+        stderr: `Malformed ${kind} output: ${error instanceof Error ? error.message : String(error)}`,
+      },
+    };
+  }
+}
+
+export async function runCodex(
+  prompt: string,
+  repo: string,
+  timeoutMs: number,
+  dataRoot: string,
+): Promise<{ result: CommandResult; summary?: string }> {
+  await mkdir(dataRoot, { recursive: true, mode: 0o700 });
+  const tempDir = await mkdtemp(join(dataRoot, "codex-"));
+  const schemaPath = join(tempDir, "result.schema.json");
+  const outputPath = join(tempDir, "result.json");
+  await writeFile(
+    schemaPath,
+    JSON.stringify({
+      type: "object",
+      additionalProperties: false,
+      required: ["summary"],
+      properties: { summary: { type: "string" } },
+    }),
+    { mode: 0o600 },
+  );
+  const args = [
+    "--ask-for-approval",
+    "never",
+    "exec",
+    "--json",
+    "--cd",
+    repo,
+    "--sandbox",
+    "workspace-write",
+    "--strict-config",
+    "-c",
+    "sandbox_workspace_write.network_access=false",
+    "-c",
+    'web_search="disabled"',
+    "--output-schema",
+    schemaPath,
+    "--output-last-message",
+    outputPath,
+    prompt,
+  ];
+  try {
+    const executable = agentExecutable("CODEX_PATH", "codex");
+    const result = await runCommand(executable, args, {
+      cwd: repo,
+      timeoutMs,
+      traceLabel: "coder",
+      traceLine: codexTraceLine,
+      recordedArgv: [
+        executable,
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--json",
+        "--cd",
+        repo,
+        "--sandbox",
+        "workspace-write",
+        "--strict-config",
+        "-c",
+        "sandbox_workspace_write.network_access=false",
+        "-c",
+        'web_search="disabled"',
+        "--output-schema",
+        "<schema>",
+        "--output-last-message",
+        "<output>",
+        "<prompt>",
+      ],
+    });
+    if (result.exitCode !== 0 || result.timedOut) return { result };
+    try {
+      const output = parseJson(CodexOutputSchema, await readFile(outputPath, "utf8"));
+      return { result, summary: output.summary };
+    } catch (error) {
+      return {
+        result: {
+          ...result,
+          exitCode: null,
+          stderr: `Malformed Codex output: ${error instanceof Error ? error.message : String(error)}`,
+        },
+      };
+    }
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+}
+
+export async function checkCliCompatibility(cwd: string): Promise<void> {
+  const hermesExecutable = agentExecutable("HERMES_PATH", "hermes");
+  const codexExecutable = agentExecutable("CODEX_PATH", "codex");
+  const hermes = await runCommand(hermesExecutable, ["--help"], {
+    cwd,
+    timeoutMs: 10_000,
+  });
+  if (hermes.exitCode !== 0 || !`${hermes.stdout}\n${hermes.stderr}`.includes("-z")) {
+    throw new Error("Hermes CLI is missing or does not support the required -z flag.");
+  }
+  const codexGlobal = await runCommand(codexExecutable, ["--help"], {
+    cwd,
+    timeoutMs: 10_000,
+  });
+  const globalHelp = `${codexGlobal.stdout}\n${codexGlobal.stderr}`;
+  if (codexGlobal.exitCode !== 0 || !globalHelp.includes("--ask-for-approval")) {
+    throw new Error("Codex CLI is missing or does not support the required --ask-for-approval flag.");
+  }
+  const codex = await runCommand(codexExecutable, ["exec", "--help"], {
+    cwd,
+    timeoutMs: 10_000,
+  });
+  const help = `${codex.stdout}\n${codex.stderr}`;
+  for (const flag of [
+    "--cd",
+    "--sandbox",
+    "--strict-config",
+    "--output-schema",
+    "--output-last-message",
+  ]) {
+    if (codex.exitCode !== 0 || !help.includes(flag)) {
+      throw new Error(`Codex CLI is missing or does not support the required ${flag} flag.`);
+    }
+  }
+}

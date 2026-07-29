@@ -16,7 +16,7 @@ From [@beamnxw's framework](https://x.com/beamnxw/status/2081022966645535079):
 | **Loop** | First attempt close but not reliable | Bounded validation retry, exit-code gating, reviewer escalation |
 | **Graph** | Specialists run in wrong order; failures hard to locate | LangGraph nodes + conditional routing, SQLite traces |
 
-The experiment ran 6 phases against a real (ish) Vite+React+TypeScript todo app (`~/try/todo-react`), each phase stress-testing one concern.
+The experiment ran 7 phases against a real (ish) Vite+React+TypeScript todo app (`~/try/todo-react`) and Laravel Safety365 backends, each phase stress-testing one concern.
 
 | Phase | Concern | Finding |
 |-------|---------|---------|
@@ -25,7 +25,8 @@ The experiment ran 6 phases against a real (ish) Vite+React+TypeScript todo app 
 | 3 | Graph (routing) | Planner research gate too conservative. Codex inferred API correctly but timed out. |
 | 4 | Harness (checkpoint) | Checkpoints work during execution. Process kill mid-node leaves orphaned snapshot. |
 | 5 | Loop (review) | Planner parse failure (JSON in code block) was main failure. Reviewer approved low-risk refactor. |
-| 6 | Graph (full loop) | Full autonomous loop: Hermes→Codex→validation→retry→complete. Zero manual intervention. jsdom harness gaps surface in first validation pass and are corrected by the loop.
+| 6 | Graph (full loop) | Full autonomous loop: Hermes→Codex→validation→retry→complete. Zero manual intervention. jsdom harness gaps surface in first validation pass and are corrected by the loop. |
+| 7 | Graph (investigation) | Added `investigator` node. Hermes audits model scopes + controller mutations, produces structured vulnerability report fed to Codex. Plugs the gap where Codex lacks domain knowledge (Laravel scoping patterns).
 
 ---
 
@@ -443,6 +444,29 @@ Never executes undocumented model output. Commands are shell strings, not arbitr
 2. **Research self-awareness** — Planner doesn't trigger research when it needs to look up a new library. Consider letting Codex self-route to research when it hits unknown APIs.
 3. **Crash resume** — Needs supervisor process, not just SQLite checkpoints.
 4. **Review risk flag routing** — `--review-required` flag not enforced by planner. Review runs anyway (mandatory step) but isn't triggered by risk detection.
+
+### Phase 7 Update: Investigator Node for Domain-Specific Analysis
+
+The Graph is the only first-class primitive. Loop and Harness are useful lenses for reasoning, but not independent concerns — they reduce to "what edges go where" and "what the node receives."
+
+
+Phase 7 added the `investigator` node for tasks requiring domain-specific code analysis (Laravel scoping, SQL patterns, security audits). The investigator runs Hermes to search for structural patterns and produces a structured vulnerability report that Codex reads as context. This plugs the gap where Codex lacks domain knowledge — instead of guessing at Laravel patterns, it receives a prioritized finding list.
+
+**Routing:** `investigate → research → coder → validation → reviewer → complete`
+- Investigate precedes research and code when `investigation_required: true` in planner output
+- Investigator output feeds into `investigation_report` state field, available to coder
+- Investigator failure routes to human checkpoint (retry or abort)
+- Human resume can target `investigate` to re-run investigation
+
+**New planner output field:**
+```json
+{"investigation_required": true}
+```
+
+**Investigator output:**
+```json
+{"findings": [{"file": "...", "location": "...", "issue": "...", "severity": "high", "fix_required": "..."}], "summary": "...", "recommendations": ["..."]}
+```
 
 ### Phase 6 Update: Full Loop Works Autonomously
 

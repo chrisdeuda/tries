@@ -244,6 +244,42 @@ The workflow handles the happy path correctly (1-2 attempts, bounded retries, re
 2. Research routing needs a better self-awareness trigger
 3. Crash resume needs a supervisor process, not just SQLite checkpoints
 
+### Phase 7 — Investigator Node for Laravel Domain Analysis [COMPLETED]
+**Concern:** Graph (new node type)
+**Question:** Can we add an `investigator` node for domain-specific code analysis that produces a structured vulnerability report for Codex?
+
+**Result:** Added `investigator` node to the LangGraph. Hermes runs structural code analysis (model scopes, controller mutations, cascade operations) and outputs a JSON vulnerability report that Codex reads as context. Plugs the gap where Codex lacks Laravel/PHP domain knowledge.
+
+**Files changed:**
+- `src/state.ts` — `investigation_report`, `investigation_required`, `investigation_mode` fields + `investigator` in worker sources
+- `src/prompts.ts` — `investigatorPrompt()` with structured output schema
+- `src/routing.ts` — `routeAfterInvestigation()`, extended `routeAfterPlanning` and `routeAfterResearch`
+- `src/agents.ts` — `InvestigatorOutputSchema`, `investigator` kind in `runHermes`
+- `src/graph.ts` — `investigatorNode`, edges: `planner→investigate`, `research→investigate`, `investigate→research/coder`, `human→investigate`
+- `tests/routing.test.ts` — new routing assertions for investigate precedence
+
+**Routing tree:**
+```
+planner
+  ├── investigation_required=true → investigate → research → coder
+  ├── research_required=true     → research → (investigate) → coder
+  └── default                    → coder
+
+investigate
+  ├── research_required=true     → research → coder
+  └── default                    → coder
+
+research
+  └── investigation_required=true → investigate → (research) → coder
+
+human_checkpoint
+  └── resumeTarget=investigate → investigate
+```
+
+**Key insight:** The Graph is the only primitive. Loop and Harness are emergent patterns, not independent concerns.
+
+---
+
 ### Phase 6 — Priority + Due Dates via Sub-Agents [COMPLETED]
 **Concern:** Graph (full orchestrator loop)
 **Question:** Can the agent-workflow autonomously implement a multi-field feature through the full Hermes→Codex→validation loop, with zero manual intervention?
