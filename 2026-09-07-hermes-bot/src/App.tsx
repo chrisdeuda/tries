@@ -6,6 +6,14 @@ type Todo = {
   completed: boolean;
 };
 
+type TodoFilter = 'all' | 'active' | 'completed';
+
+const FILTERS: { label: string; value: TodoFilter }[] = [
+  { label: 'All', value: 'all' },
+  { label: 'Active', value: 'active' },
+  { label: 'Completed', value: 'completed' },
+];
+
 const STORAGE_KEY = 'hermes-bot-todos';
 
 function loadTodos(): Todo[] {
@@ -34,6 +42,7 @@ function loadTodos(): Todo[] {
 export default function App() {
   const [todos, setTodos] = useState<Todo[]>(loadTodos);
   const [newTodo, setNewTodo] = useState('');
+  const [filter, setFilter] = useState<TodoFilter>('all');
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
@@ -43,6 +52,39 @@ export default function App() {
     () => todos.filter((todo) => !todo.completed).length,
     [todos],
   );
+
+  const visibleTodos = useMemo(() => {
+    if (filter === 'active') {
+      return todos.filter((todo) => !todo.completed);
+    }
+
+    if (filter === 'completed') {
+      return todos.filter((todo) => todo.completed);
+    }
+
+    return todos;
+  }, [filter, todos]);
+
+  const emptyMessage = useMemo(() => {
+    if (todos.length === 0) {
+      return {
+        title: 'Your list is empty.',
+        detail: 'Add a task to get started.',
+      };
+    }
+
+    if (filter === 'active') {
+      return {
+        title: 'No active tasks.',
+        detail: 'Completed tasks are hidden by this filter.',
+      };
+    }
+
+    return {
+      title: 'No completed tasks.',
+      detail: 'Finish a task to see it here.',
+    };
+  }, [filter, todos.length]);
 
   function addTodo(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,14 +142,27 @@ export default function App() {
           <button type="submit">Add task</button>
         </form>
 
-        {todos.length === 0 ? (
+        <div className="filter-controls" aria-label="Filter todos">
+          {FILTERS.map((todoFilter) => (
+            <button
+              type="button"
+              key={todoFilter.value}
+              aria-pressed={filter === todoFilter.value}
+              onClick={() => setFilter(todoFilter.value)}
+            >
+              {todoFilter.label}
+            </button>
+          ))}
+        </div>
+
+        {visibleTodos.length === 0 ? (
           <div className="empty-state" role="status">
-            <strong>Your list is empty.</strong>
-            <span>Add a task to get started.</span>
+            <strong>{emptyMessage.title}</strong>
+            <span>{emptyMessage.detail}</span>
           </div>
         ) : (
           <ul className="todo-list" aria-label="Todo items">
-            {todos.map((todo) => (
+            {visibleTodos.map((todo) => (
               <li
                 className={todo.completed ? 'todo-item completed' : 'todo-item'}
                 key={todo.id}
